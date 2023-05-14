@@ -14,12 +14,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import java.util.*;
-import static com.meliodas.valorantmatchinggame.R.drawable.*;
 
 public class GamePage extends AppCompatActivity {
     // VARIABLES
     private GridLayout gridLayout;
-    private int clicked = 0, firstClicked = 0, score = 0;
+    private int clicked = 0, score = 0;
     Button firstBtnClicked = null;
     Button secondBtnClicked = null;
 
@@ -37,8 +36,8 @@ public class GamePage extends AppCompatActivity {
         gridLayout = findViewById(R.id.gridLayout);
 
         drawableIds = new int[] {
-                jettchibi, neonchibi, phoenixchibi, razechibi, reynachibi, viperchibi,
-                jettchibi, neonchibi, phoenixchibi, razechibi, reynachibi, viperchibi
+                R.drawable.jettchibi, R.drawable.neonchibi, R.drawable.phoenixchibi, R.drawable.razechibi, R.drawable.reynachibi, R.drawable.viperchibi,
+                R.drawable.jettchibi, R.drawable.neonchibi, R.drawable.phoenixchibi, R.drawable.razechibi, R.drawable.reynachibi, R.drawable.viperchibi
         };
 
         for (int drawableId : drawableIds) {
@@ -77,7 +76,7 @@ public class GamePage extends AppCompatActivity {
         }
 
         if(secondBtnClicked != null && secondBtnClicked.equals(firstBtnClicked)) {
-            flipAndChangeBackground(firstBtnClicked, valorantlogo, true);
+            flipAndChangeBackground(firstBtnClicked, R.drawable.valorantlogo, true);
             clicked = 0;
             firstBtnClicked = null;
             secondBtnClicked = null;
@@ -116,8 +115,8 @@ public class GamePage extends AppCompatActivity {
             } else {
                 // IF NOT MATCH FLIP THE CARDS BACK
                 view.postDelayed(() -> {
-                    flipAndChangeBackground(firstBtnClicked, valorantlogo,true);
-                    flipAndChangeBackground(secondBtnClicked, valorantlogo, true);
+                    flipAndChangeBackground(firstBtnClicked, R.drawable.valorantlogo,true);
+                    flipAndChangeBackground(secondBtnClicked, R.drawable.valorantlogo, true);
                     clicked = 0;
                     firstBtnClicked = null;
                     secondBtnClicked = null;
@@ -143,7 +142,7 @@ public class GamePage extends AppCompatActivity {
             int totalSpacing = (Math.min(width / col, height / row) - 2 * spacing);
             for(int i = 0; i < row * col; i++){
                 Button button = new Button(this);
-                button.setForeground(ResourcesCompat.getDrawable(getResources(), valorantlogo,null));
+                button.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.valorantlogo,null));
                 button.setText("Unflipped");
 
                 GridLayout.LayoutParams layoutParams =
@@ -166,7 +165,6 @@ public class GamePage extends AppCompatActivity {
         flipOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-
                 if(!(view instanceof Button)) {
                     return;
                 }
@@ -174,7 +172,7 @@ public class GamePage extends AppCompatActivity {
                 Button btn = (Button) view;
                 if(isFlipped) {
                     btn.setText("Unflipped");
-                    btn.setForeground(ResourcesCompat.getDrawable(getResources(), valorantlogo,null));
+                    btn.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.valorantlogo,null));
                 }else {
                     btn.setForeground(ResourcesCompat.getDrawable(getResources(), newBackground,null));
                 }
@@ -191,19 +189,19 @@ public class GamePage extends AppCompatActivity {
     public int getDrawableId(String name) {
         switch (name) {
             case "jettchibi":
-                return jettchibi;
+                return R.drawable.jettchibi;
             case "neonchibi":
-                return neonchibi;
+                return R.drawable.neonchibi;
             case "phoenixchibi":
-                return phoenixchibi;
+                return R.drawable.phoenixchibi;
             case "razechibi":
-                return razechibi;
+                return R.drawable.razechibi;
             case "reynachibi":
-                return reynachibi;
+                return R.drawable.reynachibi;
             case "viperchibi":
-                return viperchibi;
+                return R.drawable.viperchibi;
             default:
-                return valorantlogo;
+                return R.drawable.valorantlogo;
         }
     }
 
