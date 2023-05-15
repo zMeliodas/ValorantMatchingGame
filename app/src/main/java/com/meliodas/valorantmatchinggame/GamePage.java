@@ -1,5 +1,4 @@
 package com.meliodas.valorantmatchinggame;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -27,6 +26,8 @@ public class GamePage extends AppCompatActivity {
 
     // ADDING ARRAYS INTO LIST
     List<Integer> images = new ArrayList<>();
+
+    //PUTTING BUTTONS INTO MAP
     HashMap<Button, String> buttons = new HashMap<>();
 
     @Override
@@ -40,22 +41,24 @@ public class GamePage extends AppCompatActivity {
                 R.drawable.jettchibi, R.drawable.neonchibi, R.drawable.phoenixchibi, R.drawable.razechibi, R.drawable.reynachibi, R.drawable.viperchibi
         };
 
-        for (int drawableId : drawableIds) {
-            images.add(drawableId);
-        }
-
-        // SHUFFLING THE IMAGES ORDER
-        Collections.shuffle(images);
-
         addCardsToGridLayout(4,3);
 
-        /*LOOPING THE BUTTONS TO SET ITS DEFAULT BACKGROUND INTO
-        VALORANT LOGO AND SET ON CLICK LISTENER ON EACH BUTTON*/
+        // LOOPING THE BUTTONS AND SET ON CLICK LISTENER ON EACH BUTTON
         gridLayout.post(() -> {
             buttons.keySet().forEach(btn -> {
                 btn.setOnClickListener(this::onClick);
+                flipAndChangeBackground(btn, getDrawableId(getValueByKey(btn)), false); // SHOW THE FRONT OF THE CARDS
             });
         });
+
+        // Delayed flipping back to default state
+        gridLayout.postDelayed(() -> {
+            gridLayout.post(() -> {
+                buttons.keySet().forEach(btn -> {
+                    flipAndChangeBackground(btn, R.drawable.valorantlogo, true); // FLIP THE CARDS BACK
+                });
+            });
+        }, 2000);
     }
 
     public void onClick(View view) {
@@ -152,6 +155,7 @@ public class GamePage extends AppCompatActivity {
                 button.setLayoutParams(layoutParams);
                 buttons.put(button, getResources().getResourceEntryName(drawableIds[i]));
                 gridLayout.addView(button);
+                shuffleGridLayout();
             }
         });
     }
@@ -211,7 +215,6 @@ public class GamePage extends AppCompatActivity {
                 return entry.getValue();
             }
         }
-
         return "";
     }
 
@@ -221,6 +224,16 @@ public class GamePage extends AppCompatActivity {
         }
 
         return getValueByKey(button1).equals(getValueByKey(button2));
+    }
+
+    public void shuffleGridLayout(){
+        List<Button> buttonList = new ArrayList<>(buttons.keySet());
+        Collections.shuffle(buttonList);
+
+        gridLayout.removeAllViews();
+        for (Button button : buttonList) {
+            gridLayout.addView(button);
+        }
     }
 
     public void enableButtons() {
