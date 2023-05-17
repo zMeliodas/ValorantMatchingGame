@@ -3,42 +3,44 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.Toast;
+import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import java.util.*;
 
 public class GamePage extends AppCompatActivity {
     // VARIABLES
     private GridLayout gridLayout;
     private int clicked = 0, score = 0;
+    private TextView textViewCountDown;
+    CountDownTimer timer;
     Button firstBtnClicked = null;
     Button secondBtnClicked = null;
-
     // STORING DRAWABLE IDS INTO AN ARRAY
     int[] drawableIds = new int[12];
-
-    // ADDING ARRAYS INTO LIST
-    List<Integer> images = new ArrayList<>();
-
     //PUTTING BUTTONS INTO MAP
     HashMap<Button, String> buttons = new HashMap<>();
+    MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_page);
+        player = MediaPlayer.create(this, R.raw.easysoundtrack);
+        player.start();
+        textViewCountDown = findViewById(R.id.textViewCountDownID);
         gridLayout = findViewById(R.id.gridLayout);
 
         drawableIds = new int[] {
-                R.drawable.jettchibi, R.drawable.neonchibi, R.drawable.phoenixchibi, R.drawable.razechibi, R.drawable.reynachibi, R.drawable.viperchibi,
-                R.drawable.jettchibi, R.drawable.neonchibi, R.drawable.phoenixchibi, R.drawable.razechibi, R.drawable.reynachibi, R.drawable.viperchibi
+                R.drawable.jett, R.drawable.neon, R.drawable.sova, R.drawable.raze, R.drawable.reyna, R.drawable.yoru,
+                R.drawable.jett, R.drawable.neon, R.drawable.sova, R.drawable.raze, R.drawable.reyna, R.drawable.yoru
         };
 
         addCardsToGridLayout(4,3);
@@ -51,14 +53,48 @@ public class GamePage extends AppCompatActivity {
             });
         });
 
-        // Delayed flipping back to default state
+        // FLIPPING BACK TO DEFAULT STATE AND STARTING THE TIMER
         gridLayout.postDelayed(() -> {
-            gridLayout.post(() -> {
-                buttons.keySet().forEach(btn -> {
-                    flipAndChangeBackground(btn, R.drawable.valorantlogo, true); // FLIP THE CARDS BACK
-                });
+            buttons.keySet().forEach(btn -> {
+                flipAndChangeBackground(btn, R.drawable.valorantlogo, true); // FLIP THE CARDS BACK
             });
         }, 2000);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Game Over! Time is up!");
+
+        builder.setPositiveButton("Try again?", (dialog, which) -> onClickRestart(findViewById(R.id.buttonRestart)));
+        builder.setNegativeButton("Home", (dialog, which) -> finish());
+
+        AlertDialog dialog = builder.create();
+        timer = new CountDownTimer(30000, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long secondsLeft = millisUntilFinished / 1000;
+                textViewCountDown.setText(String.valueOf(secondsLeft));
+            }
+
+            @Override
+            public void onFinish() {
+                textViewCountDown.setText("0");
+                dialog.show();
+                disableButtons();
+            }
+
+        };
+
+        gridLayout.postDelayed(() -> {
+            timer.start();
+        },3000);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        timer.cancel();
+        player.stop();
     }
 
     public void onClick(View view) {
@@ -113,7 +149,7 @@ public class GamePage extends AppCompatActivity {
                     firstBtnClicked = null;
                     secondBtnClicked = null;
                     enableButtons();
-                }, 500);
+                }, 800);
                 score++;
             } else {
                 // IF NOT MATCH FLIP THE CARDS BACK
@@ -130,8 +166,19 @@ public class GamePage extends AppCompatActivity {
 
         // IF SCORE IS EQUAL TO 6 SHOW ALL CARDS
         if (score == 6) {
-            view.postDelayed(() -> showAllCompletedCards(), 1000);
-            Toast.makeText(view.getContext(),"GAME COMPLETED!", Toast.LENGTH_SHORT).show();
+            timer.cancel();
+            view.postDelayed(() -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                builder.setTitle("Game Complete!");
+
+                builder.setPositiveButton("Retry", (dialog, which) -> onClickRestart(findViewById(R.id.buttonRestart)));
+                builder.setNegativeButton("Home", (dialog, which) -> finish());
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                showAllCompletedCards();
+            },1000);
         }
     }
 
@@ -139,18 +186,19 @@ public class GamePage extends AppCompatActivity {
         gridLayout.setColumnCount(col);
         gridLayout.setRowCount(row);
         gridLayout.post(() -> {
-            int spacing = 10;
+            int spacing = 8;
             int height = gridLayout.getHeight();
             int width = gridLayout.getWidth();
             int totalSpacing = (Math.min(width / col, height / row) - 2 * spacing);
             for(int i = 0; i < row * col; i++){
                 Button button = new Button(this);
-                button.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.valorantlogo,null));
+                button.setBackgroundResource(R.drawable.valorantlogo);
                 button.setText("Unflipped");
+                button.setTextSize(0.0F);
 
                 GridLayout.LayoutParams layoutParams =
                         new GridLayout.LayoutParams(new ViewGroup.LayoutParams(totalSpacing, totalSpacing));
-                layoutParams.setMargins(0, 0, spacing, spacing);
+                layoutParams.setMargins(spacing, spacing, spacing, spacing);
 
                 button.setLayoutParams(layoutParams);
                 buttons.put(button, getResources().getResourceEntryName(drawableIds[i]));
@@ -174,11 +222,13 @@ public class GamePage extends AppCompatActivity {
                 }
 
                 Button btn = (Button) view;
+
                 if(isFlipped) {
                     btn.setText("Unflipped");
-                    btn.setForeground(ResourcesCompat.getDrawable(getResources(), R.drawable.valorantlogo,null));
+                    btn.setTextSize(0.0F);
+                    btn.setBackgroundResource(R.drawable.valorantlogo);
                 }else {
-                    btn.setForeground(ResourcesCompat.getDrawable(getResources(), newBackground,null));
+                    btn.setBackgroundResource(newBackground);
                 }
                 flipIn.start();
             }
@@ -192,18 +242,18 @@ public class GamePage extends AppCompatActivity {
 
     public int getDrawableId(String name) {
         switch (name) {
-            case "jettchibi":
-                return R.drawable.jettchibi;
-            case "neonchibi":
-                return R.drawable.neonchibi;
-            case "phoenixchibi":
-                return R.drawable.phoenixchibi;
-            case "razechibi":
-                return R.drawable.razechibi;
-            case "reynachibi":
-                return R.drawable.reynachibi;
-            case "viperchibi":
-                return R.drawable.viperchibi;
+            case "jett":
+                return R.drawable.jett;
+            case "neon":
+                return R.drawable.neon;
+            case "sova":
+                return R.drawable.sova;
+            case "raze":
+                return R.drawable.raze;
+            case "reyna":
+                return R.drawable.reyna;
+            case "yoru":
+                return R.drawable.yoru;
             default:
                 return R.drawable.valorantlogo;
         }
@@ -240,16 +290,19 @@ public class GamePage extends AppCompatActivity {
         buttons.keySet().forEach(btn -> btn.setEnabled(true));
     }
 
+    public void disableButtons() {
+        buttons.keySet().forEach(btn -> btn.setEnabled(false));
+    }
+
     public void showAllCompletedCards(){
         buttons.keySet().forEach(btn -> btn.setVisibility(View.VISIBLE));
     }
 
-    public void OnClickHome(View v) {
-        Intent intent = new Intent(this, HomePage.class);
-        startActivity(intent);
+    public void onClickHome(View v) {
+        finish();
     }
 
-    public void OnClickRestart(View v) {
+    public void onClickRestart(View v) {
         recreate();
     }
 }

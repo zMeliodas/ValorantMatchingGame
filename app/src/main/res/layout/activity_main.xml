@@ -19,36 +19,74 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.220"
+            app:layout_constraintVertical_bias="0.10"
             android:id="@+id/textViewTitle"/>
 
     <Button
-            android:text="Start Game"
-            android:layout_width="140dp"
-            android:layout_height="45dp"
-            android:id="@+id/buttonStart"
-            android:background="@drawable/rounded_btn"
-            android:backgroundTint="#f94555"
-            android:onClick="OnClickStart"
+            android:text="EASY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonEasy"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="OnClickEasy"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:iconTint="#f94555"
+            app:layout_constraintVertical_bias="0.3222"
             android:textColor="@color/white"
-            app:layout_constraintVertical_bias="0.8"
-    />
+            android:fontFamily="@font/homefont"
+            android:textSize="50sp"
+            android:layout_marginEnd="250dp"/>
+
     <Button
-            android:text="Exit Game"
-            android:layout_width="140dp"
-            android:layout_height="45dp" android:id="@+id/buttonExit"
-            android:background="@drawable/rounded_btn"
-            android:backgroundTint="#f94555"
+            android:text="MEDIUM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonMedium"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.425"
+            android:textColor="@color/white"
+            android:fontFamily="@font/homefont"
+            android:textSize="50sp"
+            android:layout_marginEnd="205dp"
+            android:onClick="OnClickMedium"/>
+
+    <Button
+            android:text="HARD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonHard"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.533"
+            android:textColor="@color/white"
+            android:fontFamily="@font/homefont"
+            android:textSize="50sp"
+            android:layout_marginEnd="245dp"
+            android:onClick="OnClickHard"/>
+
+    <Button
+            android:text="Exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonExit"
+            android:background="?android:attr/selectableItemBackground"
             android:onClick="OnClickExit"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintVertical_bias="0.9" android:textColor="@color/white"/>
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.635"
+            android:layout_marginEnd="263dp"
+            android:textSize="50sp"
+            android:fontFamily="@font/homefont"
+            android:textColor="@color/white"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,31 +11,48 @@
     <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/button13"
+            android:id="@+id/buttonHome"
             android:src="@drawable/ic_home"
             android:background="@drawable/cirlcle_btn"
-            android:backgroundTint="#3c3a4c"
+            android:backgroundTint="#0f1724"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
-            android:onClick="OnClickHome"/>
+            android:onClick="onClickHome"/>
+
+    <TextView
+            android:text=""
+            android:fontFamily="@font/homefont"
+            android:textSize="100sp"
+            android:textColor="@color/valred"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewCountDownID"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.020"/>
+
     <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/button14"
+            android:id="@+id/buttonRestart"
             android:src="@drawable/ic_restart"
             android:background="@drawable/cirlcle_btn"
-            android:backgroundTint="#3c3a4c"
+            android:backgroundTint="#0f1724"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="36dp"
-            android:onClick="OnClickRestart"/>
+            android:layout_marginEnd="25dp"
+            android:onClick="onClickRestart"/>
+
     <android.widget.GridLayout
             android:id="@+id/gridLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:alignmentMode="alignMargins"
             android:orientation="horizontal"
             android:useDefaultMargins="true"
@@ -43,8 +60,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="32dp"
-            android:layout_marginTop="108dp"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="128dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
