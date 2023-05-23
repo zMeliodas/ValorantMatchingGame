@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.core.content.ContextCompat;
 import java.util.*;
 
 public class GamePage3 extends AppCompatActivity {
@@ -23,9 +24,7 @@ public class GamePage3 extends AppCompatActivity {
     CountDownTimer timer;
     Button firstBtnClicked = null;
     Button secondBtnClicked = null;
-    // STORING DRAWABLE IDS INTO AN ARRAY
     int[] drawableIds = new int[12];
-    //PUTTING BUTTONS INTO MAP
     HashMap<Button, String> buttons = new HashMap<>();
     MediaPlayer player;
 
@@ -34,6 +33,7 @@ public class GamePage3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_page3);
         player = MediaPlayer.create(this, R.raw.hardsoundtrack);
+        player.setLooping(true);
         player.start();
         textViewCountDown = findViewById(R.id.textViewCountDownID2);
         gridLayout = findViewById(R.id.gridLayout2);
@@ -67,14 +67,15 @@ public class GamePage3 extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Game Over! Time is up!");
-
-        builder.setPositiveButton("Try again?", (dialog, which) -> onClickRestart(findViewById(R.id.buttonRestart)));
+        builder.setTitle("Game Over!");
+        builder.setMessage("Time is up! Would you like to try again?");
+        builder.setIcon(ContextCompat.getDrawable(this,R.drawable.myeyes));
+        builder.setPositiveButton("Try again", (dialog, which) -> onClickRestart(findViewById(R.id.buttonRestart)));
         builder.setNegativeButton("Home", (dialog, which) -> finish());
 
         AlertDialog dialog = builder.create();
 
-        timer = new CountDownTimer(240000, 1000) {
+        timer = new CountDownTimer(180000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -84,8 +85,9 @@ public class GamePage3 extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                textViewCountDown.setText("0");
+                textViewCountDown.setText(String.valueOf(0));
                 dialog.show();
+                disableButtons();
             }
 
         };
@@ -93,6 +95,16 @@ public class GamePage3 extends AppCompatActivity {
         gridLayout.postDelayed(() -> {
             timer.start();
         },3000);
+    }
+
+    public void onPause(){
+        super.onPause();
+        player.pause();
+    }
+
+    public void onResume(){
+        super.onResume();
+        player.start();
     }
 
     @Override
@@ -175,8 +187,9 @@ public class GamePage3 extends AppCompatActivity {
             view.postDelayed(() -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-                builder.setTitle("Game Complete!");
-
+                builder.setTitle("Level Complete");
+                builder.setTitle("Congratulations on beating the hard mode!");
+                builder.setIcon(ContextCompat.getDrawable(this,R.drawable.theking));
                 builder.setPositiveButton("Retry", (dialog, which) -> onClickRestart(findViewById(R.id.buttonRestart)));
                 builder.setNegativeButton("Home", (dialog, which) -> finish());
 

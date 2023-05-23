@@ -14,12 +14,26 @@ public class HomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         player = MediaPlayer.create(this, R.raw.homescreensoundtrack);
+    }
+    public void onStart(){
+        super.onStart();
+        player.setLooping(true);
+        player.start();
+    }
+    public void onPause(){
+        super.onPause();
+        player.pause();
+    }
+
+    public void onResume(){
+        super.onResume();
         player.start();
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
+        player.release();
         player.stop();
     }
 
@@ -29,8 +43,8 @@ public class HomePage extends AppCompatActivity {
         easyBtn.setTextColor(getColor(R.color.valred));
         v.postDelayed(() ->{
             easyBtn.setTextColor(getColor(R.color.white));
-        },250);
-        player.stop();
+        },100);
+        player.pause();
         startActivity(intent);
     }
 
@@ -40,8 +54,8 @@ public class HomePage extends AppCompatActivity {
         mediumBtn.setTextColor(getColor(R.color.valred));
         v.postDelayed(() ->{
             mediumBtn.setTextColor(getColor(R.color.white));
-        },250);
-        player.stop();
+        },100);
+        player.pause();
         startActivity(intent);
     }
 
@@ -51,8 +65,8 @@ public class HomePage extends AppCompatActivity {
         hardBtn.setTextColor(getColor(R.color.valred));
         v.postDelayed(() ->{
             hardBtn.setTextColor(getColor(R.color.white));
-        },250);
-        player.stop();
+        },100);
+        player.pause();
         startActivity(intent);
     }
 
